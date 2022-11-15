@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import {Routes, Route} from "react-router-dom";
+// import BottomNavigation from "./Components/Layout/BottomNavigation";
+// import useMediaQuery from '@mui/material/useMediaQuery';
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { colorTheme } from "./Components/UI/colorTheme";
+import Home from "./Pages/Home";
+import Navbar from "./Components/Navbar/Navbar";
 
 function App() {
+  // const hideBottomNavigation= useMediaQuery('(min-width:600px)');
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={colorTheme}>
+    <CssBaseline/>
+    <Navbar/>
+    <Routes>
+      <Route path="/" element={<Home/>} />
+      <Route path="/menu" element={<div> inside menu </div> }/>
+      <Route path="/search" element={<div>inside search </div> }/>
+      <Route path="/cart" element={<div> inside cart </div> } />
+    </Routes>
+    {/* {!hideBottomNavigation && <BottomNavigation/>} */}
+    </ThemeProvider>
   );
 }
 
