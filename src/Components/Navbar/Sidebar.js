@@ -21,19 +21,19 @@ const categories = [
   "T-shirt",
   "Sweatshirt",
   "Dress",
-  "Pants & Skirt",
+  "Pants & Skirts",
   "Accessories",
 ];
 
-function Sidebar() {
+function Sidebar(props) {
   return (
-    <Box
+    <Box className="sidebar"
       sx={{
-        width: "15%",
+        width: `${props.length ? props.length : '15%'}`,
         height: "100vh",
-        border: 0.5,
-        borderColor: "gainsboro",
-        position: "fixed",
+        border:"0.1rem solid",
+        borderColor: 'gainsboro',
+        position: 'fixed',
         borderTop: 0,
       }}
     >
@@ -54,7 +54,7 @@ function Sidebar() {
             height:'7%',
             borderBottom: 0.5,
             borderColor: "gainsboro",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <LandscapeIcon sx={{ color: "#2b01d4", fontSize: 40}}/>
