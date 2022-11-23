@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
-const shades = {
+export const shades = {
     primary: {
         100: "#d5ccf6",
         200: "#aa99ee",

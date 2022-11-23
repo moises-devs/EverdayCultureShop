@@ -7,22 +7,28 @@ import { useEffect}from "react";
 import Checkout from "./Components/Checkout/Checkout";
 import Confirmation from "./Components/Checkout/Confirmation";
 import ItemDetails from "./Components/Item/ItemDetails";
+import  ReactDOM  from "react-dom";
+import BasicModal from "./Components/UI/Modal";
+import NotFound from "./Components/NotFound/NotFound";
 function App() {
   const { pathname } = useLocation();
   useEffect( () => {
     window.scrollTo(0,0)
-    return () => null
+    return () => null 
   },[pathname]);
   return (
     <ThemeProvider theme={colorTheme}>
     <CssBaseline/>
-    <Navbar/>
+    <Navbar>
     <Routes>
       <Route path="/" element={<Home/>} />
       <Route path="item/:itemId" element={<ItemDetails/>}/>
-      <Route path="checkout" element={<Checkout/>}/>
+      <Route path="checkout/" element={<Checkout/>}/>
       <Route path="checkout/success" element={<Confirmation/> } />
+      <Route  exact path="*" element={<NotFound/>}/>
     </Routes>
+    {ReactDOM.createPortal(<BasicModal/>, document.getElementById('modal')) }
+    </Navbar>
     </ThemeProvider>
   );
 }

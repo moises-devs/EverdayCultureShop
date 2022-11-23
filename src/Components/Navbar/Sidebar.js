@@ -16,7 +16,8 @@ import {
   Button
 } from "@mui/material";
 import LandscapeIcon from "@mui/icons-material/Landscape";
-
+import { useNavigate } from "react-router";
+import { shades } from "../UI/colorTheme";
 const categories = [
   "T-shirt",
   "Sweatshirt",
@@ -26,6 +27,7 @@ const categories = [
 ];
 
 function Sidebar(props) {
+  const navigate = useNavigate()
   return (
     <Box className="sidebar"
       sx={{
@@ -38,11 +40,13 @@ function Sidebar(props) {
       }}
     >
       <Box
+      className="sidebarcontents"
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           height: "100%",
+          overflow:'hidden'
         }}
       >
         {/* content wrapper  */}
@@ -51,29 +55,35 @@ function Sidebar(props) {
             width:'100%',
             display: "flex",
             alignItems: "center",
-            height:'7%',
+            height:'76px',
             borderBottom: 0.5,
             borderColor: "gainsboro",
             justifyContent: "center",
+            transition: 'all 300ms',
+            '&:hover':{
+              cursor:'pointer',
+              color: shades.primary[500],
+            }
           }}
+          onClick={() => {navigate('/')}}
         >
-          <LandscapeIcon sx={{ color: "#2b01d4", fontSize: 40}}/>
-          <Typography sx={{textAlign:"center"}}variant="h6" component="h1">
+          <LandscapeIcon sx={{ color: shades.primary[500], fontSize: { xs: 20, sm: 35 } }}/>
+          <Typography sx={{textAlign:"center", fontSize: { xs: 15, sm: 21 }}}variant="h6" component="h1">
             EveryDay Culture
           </Typography>
         </Box>
-        <Box sx={{ width: "100%", p: "3%" }}>
-          <Typography variant="h7" component="h3">
+        <Box sx={{ width: "100%", p: "15px" }}>
+          <Typography variant="h7" component="h3" sx={{ textAlign:'center', fontSize: { xs: 15, sm: 18, md:19, lg:21 } }}>
             {" "}
             Category{" "}
           </Typography>
           <List>
             {categories.map((category, index) => (
-              <ListItem key={index} disablePadding>
+              <ListItem key={index} disablePadding >
                 <ListItemButton>
-                  <ListItemText
+                  <ListItemText 
                     primary={category}
-                    sx={{ textAlign: "center" }}
+                    sx={{ textAlign: "center", my:0 }}
                   />
                 </ListItemButton>
               </ListItem>
@@ -81,8 +91,8 @@ function Sidebar(props) {
           </List>
           <hr />
         </Box>
-        <Box sx={{ width: "100%", paddingY:"4%", paddingX:"8%" }}>
-          <Typography variant="h7" component="h3">
+        <Box sx={{ width: "100%", paddingY:"5px", paddingX:"15px" }}>
+          <Typography variant="h7" component="h3" sx={{ textAlign:'center', fontSize: { xs: 15, sm: 18, md:19, lg:21 } }}>
             Filter By:
           </Typography>
           <FormControl sx={{width:'100%'}}>
@@ -106,7 +116,7 @@ function Sidebar(props) {
             </RadioGroup>
           </FormControl>
         </Box>
-        <Box sx={{ width: "100%", paddingY:"4%", paddingX:"8%" }}>
+        <Box sx={{ width: "100%", paddingY:"5px", paddingX:"15px"}}>
           <FormGroup>
           <FormLabel id="color-form">Color</FormLabel>
             <FormControlLabel
