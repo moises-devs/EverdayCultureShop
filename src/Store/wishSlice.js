@@ -13,7 +13,7 @@ const wishSlice = createSlice({
       if (copy) {
         updatedWishList = state.wishes.filter(item => item.id !== copy.id)
       } else {
-        updatedWishList = [...state.wishes, action.payload];
+        updatedWishList = [action.payload, ...state.wishes];
       }
 
       return { wishes: updatedWishList };

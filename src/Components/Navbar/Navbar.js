@@ -18,7 +18,7 @@ function Navbar(props) {
           boxSizing: "border-box",
         }}
       >
-        <Box sx={{ width: "100%", height: "100%" }}>
+        <Box sx={{ width: "100%", height: "100%", overflowX:'hidden'}}>
           <>{props.children}</>
         </Box>
       </Box>

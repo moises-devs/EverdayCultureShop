@@ -16,12 +16,10 @@ import { useNavigate} from 'react-router';
 export default function Item(props) {
     const [showThumbnail, setShowThumbnail] = React.useState(false);
     let wishList = useSelector(state => state.wish.wishes);
-    const showWish = wishList.find(wish => wish.id === props.id);
-    const [showFavorite, setShowFavorite] = React.useState(false);
-    React.useEffect(() => setShowFavorite(showWish),[showWish]); /*fix the heart to show up when changing pages */
+    let showWish = wishList.find(wish => wish.id === props.id);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const addWishHandler = () => {
+    const wishHandler = () => {
         let item = {...props};
         dispatch(toggleWish(item));
     }
@@ -65,7 +63,7 @@ export default function Item(props) {
             </Box>
             <CardActions>
                 <Button size="small" sx={{minWidth:'50px', backgroundColor:shades.primary[500], border:'0.2rem solid transparent', color:'white', '&:hover': {backgroundColor:'white', border: '0.2rem solid black', borderColor:shades.primary[500], color:shades.primary[500]}}}><ShoppingCartOutlinedIcon/></Button>
-                <IconButton onClick={addWishHandler} sx={{zIndex:12, position:'absolute', color:`${showFavorite ? shades.primary[500] : shades.secondary[500]}`, top:0, '&:hover':{color: shades.primary[500]} }}>
+                <IconButton onClick={wishHandler} sx={{zIndex:12, position:'absolute', color:`${showWish ? shades.primary[500] : shades.secondary[500]}`, top:0, '&:hover':{color: shades.primary[500]} }}>
                     <FavoriteOutlinedIcon />
                 </IconButton>
              </CardActions>
