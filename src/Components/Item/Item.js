@@ -32,9 +32,9 @@ export default function Item(props) {
   return (
     <Card
       sx={{
-        maxWidth: "320px",
+        maxWidth: "32s0px",
         minWidth: "180px",
-        flexBasis: "25%",
+        flexBasis: "20%",
         m: "2%",
         position: "relative",
         height:{xs:435, sm:440,}
@@ -134,7 +134,7 @@ export default function Item(props) {
                 color: `${
                   showWish ? shades.primary[500] : shades.secondary[500]
                 }`,
-                top: 0,
+                top: '3%',
                 "&:hover": { color: shades.primary[500] },
               }}
             >
