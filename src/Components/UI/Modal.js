@@ -3,14 +3,17 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { setisCartOpen, removeItem, addItem } from "../../Store/cartSlice";
+import {
+  setisCartOpen,
+  removeItem,
+  addItem,
+  decreaseItem,
+} from "../../Store/cartSlice";
 import { shades } from "./colorTheme";
 import CloseIcon from "@mui/icons-material/Close";
-import women from "./gbarkz-vqKnuG8GaQc-unsplash.jpg";
-import dress from "./mark-adriane-V7IJzp_ElQc-unsplash.jpg";
-import {IconButton } from "@mui/material";
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
+import { IconButton } from "@mui/material";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router";
 const style = {
   position: "absolute",
@@ -26,70 +29,6 @@ const style = {
   flexDirection: "column",
 };
 
-const cartItems = [
-  {
-    img: women,
-    name: "Evening text Dress",
-    price: 12.99,
-    amount: 0,
-    id: Math.random() * 32,
-    shortDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud",
-  },
-  {
-    img: dress,
-    name: "Evening text Dress",
-    price: 12.99,
-    amount: 0,
-    id: Math.random() * 32,
-    shortDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud",
-  },
-  {
-    img: women,
-    name: "Evening text Dress",
-    price: 12.99,
-    amount: 0,
-    id: Math.random() * 32,
-  },
-  {
-    img: women,
-    name: "Evening text Dress",
-    price: 12.99,
-    amount: 0,
-    id: Math.random() * 32,
-    shortDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud",
-  },
-  {
-    img: dress,
-    name: "Evening text Dress",
-    price: 12.99,
-    amount: 0,
-    id: Math.random() * 32,
-    shortDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud",
-  },
-  {
-    img: women,
-    name: "Evening text Dress",
-    price: 12.99,
-    amount: 0,
-    id: Math.random() * 32,
-    shortDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud",
-  },
-  {
-    img: dress,
-    name: "Evening text Dress",
-    price: 12.99,
-    amount: 0,
-    id: Math.random() * 32,
-    shortDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud",
-  },
-];
-
 export default function BasicModal() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -102,14 +41,17 @@ export default function BasicModal() {
   };
 
   const removeHandler = (id) => {
-    console.log(id);
     dispatch(removeItem(id));
-  }
+  };
 
   const addHandler = (item) => {
-    dispatch(addItem(item));
-  }
+    let currentItem = { ...item, amount: 1 };
+    dispatch(addItem(currentItem));
+  };
 
+  const decreaseHandler = (id) => {
+    dispatch(decreaseItem(id));
+  };
   return (
     <div>
       <Modal
@@ -118,7 +60,8 @@ export default function BasicModal() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <>
+        {totalItems !== 0 && <Box sx={style}>
           <Box
             sx={{
               display: "flex",
@@ -139,7 +82,7 @@ export default function BasicModal() {
               overflowY: "scroll",
             }}
           >
-            {cartItems.map((item) => (
+            {cart.map((item) => (
               <Box
                 sx={{
                   py: 1,
@@ -147,14 +90,14 @@ export default function BasicModal() {
                   display: "flex",
                   justifyContent: "space-between",
                   borderBottom: ".2rem solid gainsboro",
-                  height:'auto'
+                  height: "auto",
                 }}
                 key={item.id}
               >
                 <Box sx={{ height: "30%", width: "30%" }}>
                   <img
-                    src={item.img}
-                    alt={item.name}
+                    src={`http://localhost:1337${item.attributes?.img?.data[0]?.attributes?.formats?.medium?.url}`}
+                    alt={item.attributes.name}
                     height="100%"
                     width="100%"
                   />
@@ -172,69 +115,147 @@ export default function BasicModal() {
                     <Typography
                       variant="h7"
                       component="h3"
-                      sx={{ fontSize: { xs:11, sm:13, md:17, lg:19, xl:21 } }}
+                      sx={{
+                        fontSize: { xs: 11, sm: 13, md: 17, lg: 19, xl: 21 },
+                      }}
                     >
-                      {item.name}
+                      {item.attributes.name}
                     </Typography>
                     <IconButton onClick={removeHandler.bind(this, item.id)}>
-                      <CloseIcon sx={{fontSize:18}}/>
+                      <CloseIcon sx={{ fontSize: 18 }} />
                     </IconButton>
                   </Box>
                   <Typography
                     sx={{
-                      fontSize: {xs: 9, sm: 11, md:12, lg:13, xl:16},
-                      my:1
+                      fontSize: { xs: 9, sm: 11, md: 12, lg: 13, xl: 16 },
+                      my: 1,
                     }}
                     component="p"
                   >
-                    {item.shortDescription}
+                    {item.attributes.shortdescription}
                   </Typography>
-                  <Box sx={{
-                    display:'flex',
-                    justifyContent:'space-between',
-                    alignItems:'center',
-                    width:'100%',
-                  }}>
-                    <Box sx={{border:'.2rem solid gainsboro', display:'flex', flexWrap:'nowrap'}}> 
-                    <IconButton >
-                        <RemoveIcon sx={{ fontSize: {xs: 11, sm: 12, md:13, lg:16, xl:19}}}/>
-                    </IconButton>
-                    <Typography
+                  <Box
                     sx={{
-                      fontSize: {xs: 9, sm: 11, md:12, lg:13, xl:16},
-                      my:1
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      width: "100%",
                     }}
-                    component="p"
                   >
-                    {item.amount}
-                    </Typography>
-                    <IconButton onClick={addHandler}>
-                        <AddIcon sx={{ fontSize: {xs: 11, sm: 12, md:13, lg:16, xl:19}}}/>
-                    </IconButton>
+                    <Box
+                      sx={{
+                        border: ".2rem solid gainsboro",
+                        display: "flex",
+                        flexWrap: "nowrap",
+                      }}
+                    >
+                      <IconButton onClick={decreaseHandler.bind(this, item.id)}>
+                        <RemoveIcon
+                          sx={{
+                            fontSize: {
+                              xs: 11,
+                              sm: 12,
+                              md: 13,
+                              lg: 16,
+                              xl: 19,
+                            },
+                          }}
+                        />
+                      </IconButton>
+                      <Typography
+                        sx={{
+                          fontSize: { xs: 9, sm: 11, md: 12, lg: 13, xl: 16 },
+                          my: 1,
+                        }}
+                        component="p"
+                      >
+                        {item.amount}
+                      </Typography>
+                      <IconButton onClick={addHandler.bind(this, item)}>
+                        <AddIcon
+                          sx={{
+                            fontSize: {
+                              xs: 11,
+                              sm: 12,
+                              md: 13,
+                              lg: 16,
+                              xl: 19,
+                            },
+                          }}
+                        />
+                      </IconButton>
                     </Box>
                     <Typography variant="p" component="p">
-                        {`$${item.price}`}
+                      {`$${item.attributes.price}`}
                     </Typography>
                   </Box>
                 </Box>
               </Box>
             ))}
           </Box>
-          <Box sx={{display:'flex', justifyContent:'space-between', my:'7%', borderBottom:".2rem solid gainsboro"}}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              my: "7%",
+              borderBottom: ".2rem solid gainsboro",
+            }}
+          >
             <Typography varaint="h4" component="h4">
-            Subtotal </Typography>
-            {totalAmount !== 0 ? <Typography varaint="h4" component="h4" >
-              {`$${totalAmount}`}
-            </Typography> : null}
+              Subtotal{" "}
+            </Typography>
+            {totalAmount !== 0 ? (
+              <Typography varaint="h4" component="h4">
+                {`$${totalAmount.toFixed(2)}`}
+              </Typography>
+            ) : null}
           </Box>
-          <IconButton onClick={() => { navigate("checkout/")
-          dispatch(setisCartOpen())}} sx={{backgroundColor: shades.primary[500], width:'100%', borderRadius:0, color:'white', 
-          '&:hover':{
-            backgroundColor: shades.secondary[500], color:shades.primary[500]
-          }}}>
+          <IconButton
+            onClick={() => {
+              navigate("checkout/");
+              dispatch(setisCartOpen());
+            }}
+            sx={{
+              backgroundColor: shades.primary[500],
+              width: "100%",
+              borderRadius: 0,
+              color: "white",
+              "&:hover": {
+                backgroundColor: shades.secondary[500],
+                color: shades.primary[500],
+              },
+            }}
+          >
             Checkout
           </IconButton>
-        </Box>
+        </Box>}
+        {totalItems === 0 && <Box sx={{
+          width:{xs:260, sm: 290, md:300, lg:350},
+          height:{xs:230, md:250, lg:320},
+          padding:'3%',
+          textAlign:'center',
+          background:'white',
+          top:'50%',
+          right:'50%',
+          borderRadius:'5%',
+          transform: 'translate(50%,-50%)',
+          position:'absolute',
+          display:'flex',
+          flexDirection:'column',
+          alignItems:'center',
+          justifyContent:'center',
+
+        }}> 
+          <Typography variant="h3" component="p" sx={{fontSize:{xs:23, sm:25, md:28, lg:30, xl:31}}}>
+            Your cart is <span style={{color:'red'}}>empty</span> please add items to continue
+          </Typography>
+          <Box sx={{position:'absolute', right: '5%', top: '5%' }}>
+            <IconButton onClick={toggleCart}>
+              <CloseIcon sx={{color:shades.primary[500], fontSize:{xs:20, sm:24, md:30, lg:34}}}/>
+            </IconButton>
+          </Box>
+        </Box>} 
+        </>
       </Modal>
     </div>
   );

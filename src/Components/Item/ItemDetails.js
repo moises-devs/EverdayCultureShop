@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleWish } from "../../Store/wishSlice";
 import { shades } from "../UI/colorTheme";
 import PropTypes from "prop-types";
+import { addItem } from "../../Store/cartSlice";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -62,14 +63,7 @@ function ItemDetails() {
   let showWish = wishList.find((wish) => wish.id === +itemID);
 
   const wishHandler = () => {
-    let details = { ...item.attributes };
-    let imgsrc = `http://localhost:1337${item.attributes.img.data[0].attributes.formats.medium.url}`;
-    let currentItem = {
-      id: item.id,
-      ...details,
-      img: imgsrc,
-    };
-    dispatch(toggleWish(currentItem));
+    dispatch(toggleWish(item));
   };
 
   const increaseCount = () => {
@@ -81,6 +75,12 @@ function ItemDetails() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const addToCartHandler = () => {
+    let currentItem = {...item, amount:count};
+    dispatch(addItem(currentItem)); 
+    setCount(1);
   };
 
   useEffect(() => {
@@ -156,6 +156,7 @@ function ItemDetails() {
                   display: "flex",
                   width: "100%",
                   justifyContent: "space-between",
+                  alignItems:'center',
                 }}
                 role="presentation"
               >
@@ -170,7 +171,10 @@ function ItemDetails() {
                     <Typography
                       variant="span"
                       component="span"
-                      sx={{ mx: 2 }}
+                      sx={{ mx: 2, '&:hover':{
+                        cursor:'pointer',
+                        color:shades.primary[500],
+                      } }}
                       onClick={() => navigate(`/item/${+itemID - 1}`)}
                     >
                       Prev
@@ -181,6 +185,10 @@ function ItemDetails() {
                       variant="span"
                       component="span"
                       onClick={() => navigate(`/item/${+itemID + 1}`)}
+                      sx={{'&:hover':{
+                        cursor:'pointer',
+                        color:shades.primary[500],
+                      } }}
                     >
                       Next
                     </Typography>
@@ -221,6 +229,7 @@ function ItemDetails() {
                       variant="contained"
                       color="primary"
                       sx={{ marginLeft: 2 }}
+                      onClick={addToCartHandler}
                     >
                       Add to cart
                     </Button>
@@ -253,6 +262,9 @@ function ItemDetails() {
             </Box>
             {/* end of content container */}
           <Box sx={{ my:2, 
+          display:'flex',
+          flexDirection:'column',
+          alignItems:'center',
               maxWidth:1300}}> 
             <Tabs
               value={value}

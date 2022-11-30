@@ -13,11 +13,12 @@ function WishItem(props) {
     <Box sx={{ position:'relative', my: 0.3, border:`.1rem solid ${shades.primary[500]}`, display: "flex", justifyContent: "space-between", alignItems:'center'
     , borderLeft:0, borderRight:0, borderTop:0 }}>
       <Box sx={{ width: "50%", height:'85%' }}>
-        <img src={props.img} alt={props.name} height="100%" width="100%" />
+        <img src={`http://localhost:1337${props.attributes?.img?.data[0]?.attributes?.formats?.medium?.url}`}
+         alt={props.attributes.name} height="100%" width="100%" />
       </Box>
       <Box>
         <Typography variant="p" component="p" sx={{fontSize:{xs:8,sm:10,md:12,lg:14, xl:15}}}>
-            {props.name}
+            {props.attributes.name}
         </Typography>
         <RemoveCircleOutlineOutlinedIcon sx={{position:'absolute', right:5, top:3}} onClick={removeWishHandler}/>
       </Box>

@@ -10,15 +10,30 @@ import img2 from "../../Assets/axel-antas-bergkvist-ndJQbMENknI-unsplash.jpg";
 import img3 from "../../Assets/brooke-cagle-DlaAZKsSqRQ-unsplash.jpg";
 import img4 from "../../Assets/danil-aksenov-8-zZ6rSBiGU-unsplash.jpg";
 import img5 from "../../Assets/tamara-bellis-68csPWTnafo-unsplash.jpg";
-const images = [img1, img2, img3, img4, img5];
+const images = [{
+  img: img1,
+  message:'Discover Better Dress'
+}, {
+  img: img2,
+  message: 'Find your next favorite item',
+}, {
+  img:img3,
+  message: 'Our next seasonal sale starts now',
+}, {
+  img:img4,
+  message: 'Look out for BEST SELLER items'
+}, {
+  img:img5,
+  message:'Order above $50recieve free shipping'
+}];
 
 function MainCarousel() {
   const isNonMobile = useMediaQuery("(min-width:600px");
   return (
-    <Carousel
+    <>
+    {isNonMobile && <Carousel
       infiniteLoop={true}
       showThumbs={false}
-      showIndicators={false}
       showStatus={false}
       autoPlay={true}
       renderArrowPrev={(onClickHandler, hasPrev, label) => (
@@ -49,10 +64,10 @@ function MainCarousel() {
         </IconButton>
       )}
     >
-      {images.map((slide, index) => (
+      {images.map((item, index) => (
         <Box key={`carousel-image-${index}`} sx={{ background:'linear-gradient(to bottom, rgba(25,0,20,0.2), rgba(23,34,33,0.5))',}}>
           <img
-            src={slide}
+            src={item.img}
             alt={`carousel-${index}`}
             style={{
               width: "100%",
@@ -63,14 +78,19 @@ function MainCarousel() {
             }}
           />
           <p style={{
+            top:'50%',
+            left:'6%',
             position:'absolute',
-            zIndex:0,
-            outline:".1rem solid orange",
             color:'white',
-          }}> All season long sale </p>
+            fontSize:28,
+            padding:10,
+            backgroundColor:'rgba(23,23,156,0.5)',
+   
+          }}> {item.message} </p>
         </Box>
       ))}
-    </Carousel>
+    </Carousel>}
+    </>
   );
 }
 
