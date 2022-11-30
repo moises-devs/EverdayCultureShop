@@ -24,6 +24,10 @@ function TopBar(props) {
   const handleDrawerToggle = () => {
     setMobileOpen((prev) => !prev)
   };
+  const onFilterHandler = (filterBy) => {
+    props.onFilter(filterBy)
+  }
+
   const drawer = (
     <Box
       onClick={handleDrawerToggle}
@@ -32,7 +36,7 @@ function TopBar(props) {
         position:'relative'
       }}
     >
-      <Sidebar length={drawerWidth} />
+      <Sidebar length={drawerWidth} onFilter={props.onFilter} />
     </Box>
   );
 
@@ -70,7 +74,7 @@ function TopBar(props) {
             <MenuIcon />
           </IconButton>
           <Typography
-            onClick={() => navigate('/') }
+                      onClick={() => navigate("/")}
             variant="h6"
             component="div"
             sx={{

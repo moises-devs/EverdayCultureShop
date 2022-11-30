@@ -26,7 +26,6 @@ export default function Item(props) {
   };
   const addHandler = () => {
     let item = {...props, amount:1};
-    console.log(item);
     dispatch(addItem(item));
   }
   return (
@@ -51,7 +50,7 @@ export default function Item(props) {
       <CardContent sx={{display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
         {showThumbnail && (
           <Box
-            onClick={() => navigate(`item/${props.id}`)}
+            onClick={() => navigate(`/item/${props.id}`)}
             sx={{
               top: 0,
               left: 0,

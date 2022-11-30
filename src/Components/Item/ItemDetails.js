@@ -18,6 +18,7 @@ import { toggleWish } from "../../Store/wishSlice";
 import { shades } from "../UI/colorTheme";
 import PropTypes from "prop-types";
 import { addItem } from "../../Store/cartSlice";
+import Item from "./Item";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,11 +58,12 @@ function ItemDetails() {
   const [item, setItem] = useState(false);
   const [count, setCount] = useState(1);
   const [value, setValue] = useState(0);
+  const [relatedItems, setRelatedItems] = useState([]);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let wishList = useSelector((state) => state.wish.wishes);
   let showWish = wishList.find((wish) => wish.id === +itemID);
-
   const wishHandler = () => {
     dispatch(toggleWish(item));
   };
@@ -78,10 +80,11 @@ function ItemDetails() {
   };
 
   const addToCartHandler = () => {
-    let currentItem = {...item, amount:count};
-    dispatch(addItem(currentItem)); 
+    let currentItem = { ...item, amount: count };
+    dispatch(addItem(currentItem));
     setCount(1);
   };
+
 
   useEffect(() => {
     const getItem = async () => {
@@ -91,9 +94,21 @@ function ItemDetails() {
       const response = await data.json();
       setItem(response.data);
     };
+
+    const getRelatedItem = async() => {
+      const data = await fetch (
+        `http://localhost:1337/api/products?populate=img&pagination[page]=2&pagination[pageSize]=8`
+      )
+      const response = await data.json();
+      setRelatedItems(response.data);
+    }
+
     setCount(1);
     getItem();
-  }, [itemID]);
+    getRelatedItem();
+
+  }, [itemID, setRelatedItems]);
+
   return (
     <>
       {/*start of wrapper */}
@@ -101,24 +116,23 @@ function ItemDetails() {
         <Box
           sx={{
             display: "flex",
-            px: { xs: 2, sm: 5 },
+            px: 2,
             py: 4,
             flexDirection: "column",
-            alignItems:'center',
-
+            alignItems: "center",
           }}
         >
           {/*start of content container */}
           <Box
             sx={{
-              display:'flex',
+              display: "flex",
               flexDirection: { xs: "column", sm: "row" },
-              alignItems: {xs:'flex-start', lg:'center'},
+              alignItems: { xs: "flex-start", lg: "center" },
               justifyContent: "space-between",
               height: "100%",
-              maxWidth:1300
+              maxWidth: 1300,
             }}
-          > 
+          >
             {/*start of image container */}
             <Box
               sx={{
@@ -127,6 +141,7 @@ function ItemDetails() {
                 width: { xs: "100%", sm: "55%" },
                 maxWidth: 600,
                 outline: ".2rem solid gainsboro",
+                position:'relative',
               }}
             >
               <img
@@ -136,6 +151,24 @@ function ItemDetails() {
                 alt={item.attributes.name}
                 style={{ objectFit: "cover" }}
               />
+            {item.attributes.label && 
+              <Typography
+                variant="body2"
+                component="span"
+                sx={{
+                  position: "absolute",
+                  top: "3%",
+                  left: "3%",
+                  background: shades.secondary[500],
+                  color: shades.primary[500],
+                  paddingX:'3%',
+                  paddingY:'2%',
+                  borderRadius: "0.2rem",
+                  fontSize:{xs:15, sm:18, md:19}
+                }}
+          >
+            {item.attributes.label}
+          </Typography>}
             </Box>
             {/*end of image container */}
             {/*start of text container */}
@@ -156,7 +189,7 @@ function ItemDetails() {
                   display: "flex",
                   width: "100%",
                   justifyContent: "space-between",
-                  alignItems:'center',
+                  alignItems: "center",
                 }}
                 role="presentation"
               >
@@ -171,10 +204,13 @@ function ItemDetails() {
                     <Typography
                       variant="span"
                       component="span"
-                      sx={{ mx: 2, '&:hover':{
-                        cursor:'pointer',
-                        color:shades.primary[500],
-                      } }}
+                      sx={{
+                        mx: 2,
+                        "&:hover": {
+                          cursor: "pointer",
+                          color: shades.primary[500],
+                        },
+                        textDecoration:'underline',                      }}
                       onClick={() => navigate(`/item/${+itemID - 1}`)}
                     >
                       Prev
@@ -185,10 +221,13 @@ function ItemDetails() {
                       variant="span"
                       component="span"
                       onClick={() => navigate(`/item/${+itemID + 1}`)}
-                      sx={{'&:hover':{
-                        cursor:'pointer',
-                        color:shades.primary[500],
-                      } }}
+                      sx={{
+                        "&:hover": {
+                          cursor: "pointer",
+                          color: shades.primary[500],
+                        },
+                        textDecoration:'underline',
+                      }}
                     >
                       Next
                     </Typography>
@@ -197,17 +236,17 @@ function ItemDetails() {
               </Box>
               {/* end of breadcrumbs */}
               {/* start of item description */}
-                <Box>
-                  <Typography
-                    variant="h3"
-                    component="h3"
-                    sx={{ fontSize: { xs: 33, sm: 35, md: 40 }, my: 0.5 }}
-                  >
-                    {item.attributes.name}
-                  </Typography>
-                  <Typography varaint="p" component="p" sx={{ my: 1 }}>
-                    {`$${item.attributes.price}`}
-                  </Typography>
+              <Box>
+                <Typography
+                  variant="h3"
+                  component="h3"
+                  sx={{ fontSize: { xs: 33, sm: 35, md: 40 }, my: 0.5 }}
+                >
+                  {item.attributes.name}
+                </Typography>
+                <Typography varaint="p" component="p" sx={{ my: 1 }}>
+                  {`$${item.attributes.price}`}
+                </Typography>
                 <Typography varaiant="p" component="p" sx={{ my: 0.5 }}>
                   {item.attributes.shortdescription}
                 </Typography>
@@ -215,61 +254,65 @@ function ItemDetails() {
               {/* end of item description */}
               {/*start of user action buttons */}
               <Box>
-                  <Box sx={{ display: "flex", alignItems: "center", my: 0.5 }}>
-                    <IconButton onClick={decreaseCount}>
-                      <RemoveCircleIcon color="primary" />
-                    </IconButton>
-                    <Typography variant="h6" component="span">
-                      {count}
-                    </Typography>
-                    <IconButton onClick={increaseCount}>
-                      <AddCircleIcon color="primary" />
-                    </IconButton>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      sx={{ marginLeft: 2 }}
-                      onClick={addToCartHandler}
-                    >
-                      Add to cart
-                    </Button>
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography varaint="p" component="p">
-                      Add to Wish List
-                    </Typography>
-                    <IconButton
-                      onClick={wishHandler}
-                      sx={{
-                        color: `${
-                          showWish ? shades.primary[500] : shades.secondary[500]
-                        }`,
-                        "&:hover": { color: shades.primary[500] },
-                      }}
-                    >
-                      <FavoriteIcon />
-                    </IconButton>
-                  </Box>
-                  <Box>
-                    <Typography variant="p" component="span">
-                      {`Categories: ${item.attributes.category}`}
-                    </Typography>
-                  </Box>
-                </Box> 
-                {/*end of action container */}
+                <Box sx={{ display: "flex", alignItems: "center", my: 0.5 }}>
+                  <IconButton onClick={decreaseCount}>
+                    <RemoveCircleIcon color="primary" />
+                  </IconButton>
+                  <Typography variant="h6" component="span">
+                    {count}
+                  </Typography>
+                  <IconButton onClick={increaseCount}>
+                    <AddCircleIcon color="primary" />
+                  </IconButton>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ marginLeft: 2 }}
+                    onClick={addToCartHandler}
+                  >
+                    Add to cart
+                  </Button>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Typography varaint="p" component="p">
+                    Add to Wish List
+                  </Typography>
+                  <IconButton
+                    onClick={wishHandler}
+                    sx={{
+                      color: `${
+                        showWish ? shades.primary[500] : shades.secondary[500]
+                      }`,
+                      "&:hover": { color: shades.primary[500] },
+                    }}
+                  >
+                    <FavoriteIcon />
+                  </IconButton>
+                </Box>
+                <Box>
+                  <Typography variant="p" component="span">
+                    {`Categories: ${item.attributes.category}`}
+                  </Typography>
+                </Box>
               </Box>
-              {/* end of text container */}
+              {/*end of action container */}
             </Box>
-            {/* end of content container */}
-          <Box sx={{ my:2, 
-          display:'flex',
-          flexDirection:'column',
-          alignItems:'center',
-              maxWidth:1300}}> 
+            {/* end of text container */}
+          </Box>
+          {/* end of content container */}
+          <Box
+            sx={{
+              my: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              maxWidth: 1300,
+            }}
+          >
             <Tabs
               value={value}
               onChange={handleChange}
-              aria-label="basic tabs example"
+              aria-label="descrioption and reviews tabs"
               textColor="inherit"
               indicatorColor="primary"
             >
@@ -282,6 +325,25 @@ function ItemDetails() {
                 {item.attributes.longdescription}
               </Typography>
             </TabPanel>
+            <TabPanel value={value} index={1}>
+              <Typography variant="p" component="span" sx={{ my: 0.5 }}>
+                No reviews 
+              </Typography>
+            </TabPanel>
+          </Box>
+          <Box>
+            <Typography
+              variant="h3"
+              component="h3"
+              sx={{ fontSize: { xs: 30, sm: 31, md: 38 }, my: 0.5 }}
+            >
+              Related Products
+            </Typography>
+            <Box sx={{ width:'100%', display: "flex", flexWrap: "wrap", justifyContent: "space-evenly" }}>
+            {relatedItems.map((item) => (
+          <Item key={item.id} {...item} />
+        ))}
+            </Box>
           </Box>
         </Box>
       )}

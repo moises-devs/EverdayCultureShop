@@ -7,8 +7,8 @@ function Navbar(props) {
   const hideSideBar = useMediaQuery("(min-width:900px)");
   return (
     <>
-      {hideSideBar && <Sidebar />}
-      <TopBar />
+      {hideSideBar && <Sidebar onFilter={props.onFilter} />}
+      <TopBar onFilter={props.onFilter} />
       <Box
         sx={{
           height: "100vh",

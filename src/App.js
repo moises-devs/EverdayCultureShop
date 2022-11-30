@@ -3,7 +3,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { colorTheme } from "./Components/UI/colorTheme";
 import Home from "./Pages/Home";
 import Navbar from "./Components/Navbar/Navbar";
-import { useEffect}from "react";
+import { useEffect, useState}from "react";
 import Checkout from "./Components/Checkout/Checkout";
 import Confirmation from "./Components/Checkout/Confirmation";
 import ItemDetails from "./Components/Item/ItemDetails";
@@ -16,12 +16,17 @@ function App() {
     window.scrollTo(0,0)
     return () => null 
   },[pathname]);
+  const [filteredPath, setFilterdPath] = useState('');
+  const filterHandler = (path) => {
+    setFilterdPath(path);
+    console.log(path, 'is path being sent');
+  } 
   return (
     <ThemeProvider theme={colorTheme}>
     <CssBaseline/>
-    <Navbar>
+    <Navbar onFilter={filterHandler}>
     <Routes>
-      <Route path="/" element={<Home/>} />
+      <Route path="/" element={<Home path={filteredPath}/>} />
       <Route path="item/:itemID" element={<ItemDetails/>}/>
       <Route path="checkout/" element={<Checkout/>}/>
       <Route path="checkout/success" element={<Confirmation/> } />

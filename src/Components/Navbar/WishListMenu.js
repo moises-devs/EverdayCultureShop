@@ -5,7 +5,6 @@ import { shades } from '../UI/colorTheme';
 import WishItem from './WishItem';
 function WishListMenu(props) {
     const wishList = useSelector((state) => state.wish.wishes);
-    console.log(wishList);
   return (
     <Box 
     sx={{

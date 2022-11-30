@@ -22,12 +22,15 @@ const categories = [
   "T-shirt",
   "Sweatshirt",
   "Dress",
-  "Pants & Skirts",
+  "Pants and Skirts",
   "Accessories",
 ];
 
 function Sidebar(props) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const onFilterHandler = (filterBy) => {
+    props.onFilter(filterBy)
+  }
   return (
     <Box className="sidebar"
       sx={{
@@ -65,7 +68,7 @@ function Sidebar(props) {
               color: shades.primary[500],
             }
           }}
-          onClick={() => {navigate('/')}}
+          onClick={onFilterHandler.bind(this, '')}
         >
           <LandscapeIcon sx={{ color: shades.primary[500], fontSize: { xs: 20, sm: 35 } }}/>
           <Typography sx={{textAlign:"center", fontSize: { xs: 15, sm: 21 }}}variant="h6" component="h1">
@@ -80,7 +83,7 @@ function Sidebar(props) {
           <List>
             {categories.map((category, index) => (
               <ListItem key={index} disablePadding >
-                <ListItemButton>
+                <ListItemButton onClick={onFilterHandler.bind(this, category)}>
                   <ListItemText 
                     primary={category}
                     sx={{ textAlign: "center", my:0 }}
