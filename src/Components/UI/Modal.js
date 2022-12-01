@@ -219,10 +219,13 @@ export default function BasicModal() {
               backgroundColor: shades.primary[500],
               width: "100%",
               borderRadius: 0,
+              border:'0.2rem solid white',
               color: "white",
+              transition:'all 300ms',
               "&:hover": {
-                backgroundColor: shades.secondary[500],
-                color: shades.primary[500],
+                backgroundColor: 'black',
+                color: shades.secondary[500],
+                border:`0.2rem solid ${shades.primary[500]}`
               },
             }}
           >

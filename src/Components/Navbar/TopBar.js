@@ -23,8 +23,8 @@ function TopBar(props) {
   const handleDrawerToggle = () => {
     setMobileOpen((prev) => !prev)
   };
-  const onFilterHandler = (filterBy) => {
-    props.onFilter(filterBy)
+  const onFilterHandler = () => {
+    props.onFilter({path:'', type:''});
     navigate("/");
   }
 
@@ -74,7 +74,7 @@ function TopBar(props) {
             <MenuIcon />
           </IconButton>
           <Typography
-                      onClick={onFilterHandler.bind('')}
+                      onClick={onFilterHandler}
             variant="h6"
             component="div"
             sx={{

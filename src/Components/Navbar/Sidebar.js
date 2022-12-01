@@ -36,9 +36,9 @@ function Sidebar(props) {
   const onFilterHandler = (data, type) => {
     let path = data;
     if (type === 'category') {
-      console.log('dealing with a category');
       path = `&filters[${type}][$eq]=${data}`
     }
+    console.log({path:path, type:data});
     props.onFilter({path:path, type:data})
     navigate("/");
   }

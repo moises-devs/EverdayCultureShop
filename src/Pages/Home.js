@@ -2,10 +2,10 @@ import { Box, Typography } from "@mui/material";
 import Item from "../Components/Item/Item";
 import MainCarousel from "../Components/Carousel/MainCarousel";
 import { useEffect, useState } from "react";
+import Subscribe from "../Components/Subscribe/Subscribe";
 function Home(props) {
   const [items, setItems] = useState([]);
   useEffect(() => {
-    console.log(`http://localhost:1337/api/products/?populate=img${props.path.path ? props.path.path : ''}`)
     const getItem = async () => {
       console.log('sending request')
       const data = await fetch(
@@ -28,6 +28,7 @@ function Home(props) {
           <Item key={item.id} {...item} />
         ))}
       </Box>
+      <Subscribe/>
     </>
   );
 }
