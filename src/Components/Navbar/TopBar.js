@@ -17,7 +17,6 @@ function TopBar(props) {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [wishListOpen, setWishListOpen] = useState(false);
-
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart.cart);
   const wishList = useSelector(state => state.wish.wishes);
@@ -26,6 +25,7 @@ function TopBar(props) {
   };
   const onFilterHandler = (filterBy) => {
     props.onFilter(filterBy)
+    navigate("/");
   }
 
   const drawer = (
@@ -36,7 +36,7 @@ function TopBar(props) {
         position:'relative'
       }}
     >
-      <Sidebar length={drawerWidth} onFilter={props.onFilter} />
+      <Sidebar length={drawerWidth} onFilter={props.onFilter} path={props.path}  />
     </Box>
   );
 
@@ -74,7 +74,7 @@ function TopBar(props) {
             <MenuIcon />
           </IconButton>
           <Typography
-                      onClick={() => navigate("/")}
+                      onClick={onFilterHandler.bind('')}
             variant="h6"
             component="div"
             sx={{

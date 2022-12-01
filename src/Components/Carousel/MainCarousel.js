@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, IconButton, useMediaQuery } from "@mui/material";
+import { Box, IconButton, useMediaQuery } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -11,11 +11,11 @@ import img3 from "../../Assets/brooke-cagle-DlaAZKsSqRQ-unsplash.jpg";
 import img4 from "../../Assets/danil-aksenov-8-zZ6rSBiGU-unsplash.jpg";
 import img5 from "../../Assets/tamara-bellis-68csPWTnafo-unsplash.jpg";
 const images = [{
-  img: img1,
-  message:'Discover Better Dress'
-}, {
   img: img2,
-  message: 'Find your next favorite item',
+  message:'Find your next favorite item',
+}, {
+  img: img5,
+  message: 'Discover Better Dress',
 }, {
   img:img3,
   message: 'Our next seasonal sale starts now',
@@ -23,8 +23,8 @@ const images = [{
   img:img4,
   message: 'Look out for BEST SELLER items'
 }, {
-  img:img5,
-  message:'Order above $50recieve free shipping'
+  img:img1,
+  message:'Order above $50 recieve free shipping'
 }];
 
 function MainCarousel() {

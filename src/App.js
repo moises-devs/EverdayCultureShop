@@ -16,15 +16,15 @@ function App() {
     window.scrollTo(0,0)
     return () => null 
   },[pathname]);
-  const [filteredPath, setFilterdPath] = useState('');
-  const filterHandler = (path) => {
-    setFilterdPath(path);
-    console.log(path, 'is path being sent');
+  const [filteredPath, setFilterdPath] = useState({path:'', type:''});
+  const filterHandler = (pathObj) => {
+    setFilterdPath(pathObj);
+    console.log(pathObj, 'is path object being sent');
   } 
   return (
     <ThemeProvider theme={colorTheme}>
     <CssBaseline/>
-    <Navbar onFilter={filterHandler}>
+    <Navbar onFilter={filterHandler} pathToFilterBy={filteredPath}>
     <Routes>
       <Route path="/" element={<Home path={filteredPath}/>} />
       <Route path="item/:itemID" element={<ItemDetails/>}/>

@@ -18,6 +18,7 @@ import {
 import LandscapeIcon from "@mui/icons-material/Landscape";
 import { useNavigate } from "react-router";
 import { shades } from "../UI/colorTheme";
+import { useState } from "react";
 const categories = [
   "T-shirt",
   "Sweatshirt",
@@ -28,9 +29,54 @@ const categories = [
 
 function Sidebar(props) {
   const navigate = useNavigate();
-  const onFilterHandler = (filterBy) => {
-    props.onFilter(filterBy)
+  const [type, setType] = useState(false); 
+  const [black, setBlack] = useState(false);
+  const [grey, setGrey] = useState(false);
+  const [multiColor, setMultiColor] = useState({});
+  const onFilterHandler = (data, type) => {
+    let path = data;
+    if (type === 'category') {
+      console.log('dealing with a category');
+      path = `&filters[${type}][$eq]=${data}`
+    }
+    props.onFilter({path:path, type:data})
+    navigate("/");
   }
+
+  const submitFilterHandler = () => {
+    let filterBy = {...type, items: [black,grey,multiColor]};
+    let typePath = filterBy.type ? `&filter[type][$eq]=${filterBy.type}` : '';
+    let colorPath = filterBy.items.map((color) => {
+      if(color) {
+        if (color.colorProps) {
+          return color.colorProps.isChecked ? `&filter[color][$eq]=${color.colorProps.colorName}` :''
+        }
+      }
+      return ''
+    }).join('');
+    props.onFilter({path:`${typePath}${colorPath}`, type:'Filtered Items'});
+  } 
+
+  const onTypeChangeHandler = (e) => {
+    setType({type:e.target.value});
+  }
+
+  const onColorHandler = (e) => {
+    switch( e.target.labels[0].outerText ) {
+      case 'Black':
+        setBlack({colorProps:{colorName: e.target.labels[0].outerText, isChecked:e.target.checked}});
+        break;
+      case 'Grey':
+        setGrey({colorProps:{colorName: e.target.labels[0].outerText, isChecked:e.target.checked}});
+        break;
+      case 'Multi-color':
+        setMultiColor({colorProps:{colorName: e.target.labels[0].outerText, isChecked:e.target.checked}});
+        break;
+      default:
+        console.log('someting went wrong');
+    }
+  }
+
   return (
     <Box className="sidebar"
       sx={{
@@ -68,7 +114,7 @@ function Sidebar(props) {
               color: shades.primary[500],
             }
           }}
-          onClick={onFilterHandler.bind(this, '')}
+          onClick={onFilterHandler.bind(this, '', '')}
         >
           <LandscapeIcon sx={{ color: shades.primary[500], fontSize: { xs: 20, sm: 35 } }}/>
           <Typography sx={{textAlign:"center", fontSize: { xs: 15, sm: 21 }}}variant="h6" component="h1">
@@ -83,7 +129,7 @@ function Sidebar(props) {
           <List>
             {categories.map((category, index) => (
               <ListItem key={index} disablePadding >
-                <ListItemButton onClick={onFilterHandler.bind(this, category)}>
+                <ListItemButton onClick={onFilterHandler.bind(this, category, 'category')}>
                   <ListItemText 
                     primary={category}
                     sx={{ textAlign: "center", my:0 }}
@@ -102,19 +148,19 @@ function Sidebar(props) {
             <FormLabel id="type-form">Type</FormLabel>
             <RadioGroup
               aria-labelledby="type-radio-button-group-label"
-              defaultValue="basic"
               name="type" 
               sx={{width:'100%'}}
+              onChange={onTypeChangeHandler}
             >
               <FormControlLabel
-                value="basic"
+                value="Basic"
                 control={<Radio />}
-                label="basic"
+                label="Basic"
               />
               <FormControlLabel
-                value="pattern"
+                value="Pattern"
                 control={<Radio />}
-                label="pattern"
+                label="Pattern"
               />
             </RadioGroup>
           </FormControl>
@@ -123,20 +169,20 @@ function Sidebar(props) {
           <FormGroup>
           <FormLabel id="color-form">Color</FormLabel>
             <FormControlLabel
-              control={<Checkbox defaultChecked />}
+              control={<Checkbox onChange={onColorHandler} />}
               label="Black"
-            />
+            /> 
             <FormControlLabel
-              control={<Checkbox defaultChecked />}
+              control={<Checkbox  onChange={onColorHandler}  />}
               label="Grey"
             />
             <FormControlLabel
-              control={<Checkbox defaultChecked />}
+              control={<Checkbox  onChange={onColorHandler}  />}
               label="Multi-color"
             />
           </FormGroup>
         </Box>
-        <Button variant="contained">Submit</Button>
+        <Button onClick={submitFilterHandler} type="submit" variant="contained">Submit</Button>
       </Box>
     </Box>
   );
