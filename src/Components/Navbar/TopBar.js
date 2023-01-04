@@ -33,7 +33,7 @@ function TopBar(props) {
       onClick={handleDrawerToggle}
       sx={{
         textAlign: "center",
-        position:'relative'
+        position:'relative',
       }}
     >
       <Sidebar length={drawerWidth} onFilter={props.onFilter} path={props.path}  />
@@ -48,6 +48,7 @@ function TopBar(props) {
         display: "flex",
         marginLeft: { xs: 0, sm: 0, md: "15%", lg: "15%", xl: "15%", }, //changed here
       }}
+      className="TopBar"
     >
       <AppBar
         component="nav"

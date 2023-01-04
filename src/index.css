@@ -1,14 +1,17 @@
-* {
-    box-sizing: border-box;
+*, *::before, *::after {
+    box-sizing: border-box !important;
     margin:0;
     padding:0;
 }
 html {
-    height:100vh;
-    width:100vw;
+    overflow:scroll;
+    height:auto;
 }
 body {
-    height: 100vh;
-    width:100vw;
+    height: 100%;
+    width:100%;
+    margin: 0;
+    padding:0;
+    
 }
 

@@ -1,12 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Box, Button, Stepper, Step, StepLabel } from "@mui/material";
 import { Formik } from "formik";
 import { useState } from "react";
 import * as yup from "yup";
-import { shades } from "../UI/colorTheme";
+import { shades } from "../../Components/UI/colorTheme";
 import ShippingAddress from "./ShippingAddress";
 import Payment from "./Payment";
+import { useLocation, useNavigate } from "react-router";
 const initialValues = {
   billingAddress: {
     firstName: "",
@@ -49,32 +49,32 @@ const checkoutSchema = [
       isSameAddress: yup.boolean(),
       firstName: yup.string().when("isSameAddress", {
         is: false,
-        then: yup.string().required("requried"),
+        then: yup.string().required("required"),
       }),
       lastName: yup.string().when("isSameAddress", {
         is: false,
-        then: yup.string().required("requried"),
+        then: yup.string().required("required"),
       }),
       country: yup.string().when("isSameAddress", {
         is: false,
-        then: yup.string().required("requried"),
+        then: yup.string().required("required"),
       }),
       street1: yup.string().when("isSameAddress", {
         is: false,
-        then: yup.string().required("requried"),
+        then: yup.string().required("required"),
       }),
       street2: yup.string(),
       city: yup.string().when("isSameAddress", {
         is: false,
-        then: yup.string().required("requried"),
+        then: yup.string().required("required"),
       }),
       state: yup.string().when("isSameAddress", {
         is: false,
-        then: yup.string().required("requried"),
+        then: yup.string().required("required"),
       }),
       zipCode: yup.string().when("isSameAddress", {
         is: false,
-        then: yup.string().required("requried"),
+        then: yup.string().required("required"),
       }),
     }),
   }),
@@ -85,14 +85,14 @@ const checkoutSchema = [
 ];
 
 function Checkout() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   let isFirstStep = activeStep === 0;
-  let isSecondStep = activeStep === 1;
-  const cart = useSelector((state) => state.cart.cart);
+  const isSecondStep = activeStep === 1;
 
   const handleFormSubmit = async (values, actions) => {
     setActiveStep(activeStep + 1);
-    console.log(actions);
     if (isFirstStep && values.shippingAddress.isSameAddress) {
       actions.setFieldValue("shippingAddress", {
         ...values.billingAddress,
@@ -100,7 +100,9 @@ function Checkout() {
       });
     }
     if (isSecondStep) {
-      console.log("pay here");
+      console.log('navigating outside of here');
+      navigate(`${pathname}success`);
+
     }
     actions.setTouched({});
   };
@@ -150,7 +152,7 @@ function Checkout() {
               />
             )}
             <Box display="flex"  flexDirection={{xs: 'column', sm:'row'}} justifyContent="space-between"  gap="5%" >
-              {isSecondStep && (
+              {!isFirstStep && (
                 <Button
                   fullWidth
                   color="primary"
@@ -181,9 +183,8 @@ function Checkout() {
                   padding: 4,
                   marginY:3
                 }}
-                onClick={() => setActiveStep(activeStep + 1)}
               >
-                {isFirstStep ? 'Next' : 'Place Order'}
+                {!isSecondStep ? 'Next' : 'Place Order'}
               </Button>
             </Box>
           </form>

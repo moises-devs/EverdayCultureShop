@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import { shades } from "../UI/colorTheme";
 import { useDispatch } from "react-redux";

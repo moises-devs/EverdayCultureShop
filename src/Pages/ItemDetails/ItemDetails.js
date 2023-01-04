@@ -15,11 +15,11 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleWish } from "../../Store/wishSlice";
-import { shades } from "../UI/colorTheme";
+import { shades } from "../..//Components/UI/colorTheme";
 import PropTypes from "prop-types";
 import { addItem } from "../../Store/cartSlice";
-import Item from "./Item";
-
+import Item from "../../Components/Item/Item";
+import styles from "./ItemDetails.module.css"
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -120,7 +120,9 @@ function ItemDetails() {
             py: 4,
             flexDirection: "column",
             alignItems: "center",
+            overflow:'hidden'
           }}
+          className={` top ${styles.contentWrapper}`}
         >
           {/*start of content container */}
           <Box
@@ -340,8 +342,8 @@ function ItemDetails() {
               Related Products
             </Typography>
             <Box sx={{ width:'100%', display: "flex", flexWrap: "wrap", justifyContent: "space-evenly" }}>
-            {relatedItems.map((item) => (
-          <Item key={item.id} {...item} />
+            {relatedItems.map((item, index) => (
+          <Item key={`${item.id}-${index}`} {...item} />
         ))}
             </Box>
           </Box>
