@@ -4,21 +4,26 @@ import MainCarousel from "../../Components/Carousel/MainCarousel";
 import { useEffect, useState } from "react";
 import Subscribe from "../../Components/Subscribe/Subscribe";
 import styles from "./Home.module.css"
+import axios from "axios";
 function Home(props) {
   const [items, setItems] = useState([]);
   useEffect(() => {
     const getItems = async () => {
-      const data = await fetch(
+      try {
+      const res= await axios.get(
         `${process.env.REACT_APP_API_URL}/products/?populate=img${props.path.path ? props.path.path : ''}`,
         {
           headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`
+            Authorization: "bearer " + process.env.REACT_APP_API_TOKEN,
           }
         }
       );
-      const response = await data.json();
-      setItems(response.data);
+      console.log(res);
+      setItems(res.data.data);
+    }
+    catch (err) {
+      console.log(err);
+    }
     };
     getItems();
   }, [props.path]);

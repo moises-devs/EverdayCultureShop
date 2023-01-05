@@ -19,7 +19,8 @@ import { shades } from "../..//Components/UI/colorTheme";
 import PropTypes from "prop-types";
 import { addItem } from "../../Store/cartSlice";
 import Item from "../../Components/Item/Item";
-import styles from "./ItemDetails.module.css"
+import styles from "./ItemDetails.module.css";
+import axios from "axios";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -85,40 +86,38 @@ function ItemDetails() {
     setCount(1);
   };
 
-
   useEffect(() => {
     const getItem = async () => {
-      const data = await fetch(
-        `${process.env.REACT_APP_API_URL}/products/${itemID}?populate=img`,
-        {
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`
+      try {
+        const data = await axios(
+          `${process.env.REACT_APP_API_URL}/products/${itemID}?populate=img`,
+          {
+            headers: {
+              Authorization: "bearer " + process.env.REACT_APP_API_TOKEN,
+            },
           }
-        }
-      );
-      const response = await data.json();
-      setItem(response.data);
+        );
+        setItem(data.data.data);
+      } catch (err) {
+        console.log(err);
+      }
     };
 
-    const getRelatedItem = async() => {
-      const data = await fetch (
+    const getRelatedItem = async () => {
+      const data = await axios(
         `${process.env.REACT_APP_API_URL}/products?populate=img&pagination[page]=2&pagination[pageSize]=8`,
         {
           headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`
-          }
+            Authorization: "bearer " + process.env.REACT_APP_API_TOKEN,
+          },
         }
-      )
-      const response = await data.json();
-      setRelatedItems(response.data);
-    }
+      );
+      setRelatedItems(data.data.data);
+    };
 
     setCount(1);
     getItem();
     getRelatedItem();
-
   }, [itemID, setRelatedItems]);
 
   return (
@@ -132,7 +131,7 @@ function ItemDetails() {
             py: 4,
             flexDirection: "column",
             alignItems: "center",
-            overflow:'hidden'
+            overflow: "hidden",
           }}
           className={` top ${styles.contentWrapper}`}
         >
@@ -155,34 +154,35 @@ function ItemDetails() {
                 width: { xs: "100%", sm: "55%" },
                 maxWidth: 600,
                 outline: ".2rem solid gainsboro",
-                position:'relative',
+                position: "relative",
               }}
             >
               <img
                 width="100%"
                 height="100%"
-                src={`http://localhost:1337${item.attributes?.img?.data[0]?.attributes?.formats?.medium?.url}`}
+                src={`${process.env.REACT_APP_UPLOAD_URL}${item.attributes?.img?.data[0]?.attributes?.formats?.medium?.url}`}
                 alt={item.attributes.name}
                 style={{ objectFit: "cover" }}
               />
-            {item.attributes.label && 
-              <Typography
-                variant="body2"
-                component="span"
-                sx={{
-                  position: "absolute",
-                  top: "3%",
-                  left: "3%",
-                  background: shades.secondary[500],
-                  color: shades.primary[500],
-                  paddingX:'3%',
-                  paddingY:'2%',
-                  borderRadius: "0.2rem",
-                  fontSize:{xs:15, sm:18, md:19}
-                }}
-          >
-            {item.attributes.label}
-          </Typography>}
+              {item.attributes.label && (
+                <Typography
+                  variant="body2"
+                  component="span"
+                  sx={{
+                    position: "absolute",
+                    top: "3%",
+                    left: "3%",
+                    background: shades.secondary[500],
+                    color: shades.primary[500],
+                    paddingX: "3%",
+                    paddingY: "2%",
+                    borderRadius: "0.2rem",
+                    fontSize: { xs: 15, sm: 18, md: 19 },
+                  }}
+                >
+                  {item.attributes.label}
+                </Typography>
+              )}
             </Box>
             {/*end of image container */}
             {/*start of text container */}
@@ -224,7 +224,8 @@ function ItemDetails() {
                           cursor: "pointer",
                           color: shades.primary[500],
                         },
-                        textDecoration:'underline',                      }}
+                        textDecoration: "underline",
+                      }}
                       onClick={() => navigate(`/item/${+itemID - 1}`)}
                     >
                       Prev
@@ -240,7 +241,7 @@ function ItemDetails() {
                           cursor: "pointer",
                           color: shades.primary[500],
                         },
-                        textDecoration:'underline',
+                        textDecoration: "underline",
                       }}
                     >
                       Next
@@ -341,7 +342,7 @@ function ItemDetails() {
             </TabPanel>
             <TabPanel value={value} index={1}>
               <Typography variant="p" component="span" sx={{ my: 0.5 }}>
-                No reviews 
+                No reviews
               </Typography>
             </TabPanel>
           </Box>
@@ -353,10 +354,17 @@ function ItemDetails() {
             >
               Related Products
             </Typography>
-            <Box sx={{ width:'100%', display: "flex", flexWrap: "wrap", justifyContent: "space-evenly" }}>
-            {relatedItems.map((item, index) => (
-          <Item key={`${item.id}-${index}`} {...item} />
-        ))}
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-evenly",
+              }}
+            >
+              {relatedItems.map((item, index) => (
+                <Item key={`${item.id}-${index}`} {...item} />
+              ))}
             </Box>
           </Box>
         </Box>
