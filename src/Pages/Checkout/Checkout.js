@@ -100,7 +100,6 @@ function Checkout() {
       });
     }
     if (isSecondStep) {
-      console.log('navigating outside of here');
       navigate(`${pathname}success`);
 
     }

@@ -24,8 +24,11 @@ const wishSlice = createSlice({
       );
       return { wishes: updatedArr };
     },
+    emptyWishes(state, action) {
+      state.wishes = [];
+    }
   },
 });
 
-export const { toggleWish, removeWish } = wishSlice.actions;
+export const { toggleWish, removeWish, emptyWishes } = wishSlice.actions;
 export default wishSlice;

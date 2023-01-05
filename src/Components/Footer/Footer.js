@@ -3,7 +3,8 @@ import { Box, Typography } from '@mui/material'
 import { shades } from '../UI/colorTheme'
 function Footer() {
   return (
-    <Box sx={{display:'flex', justifyContent:'space-between', flexWrap:'wrap', background:'gainsboro', paddingX:4, paddingY:5}}>
+    <Box sx={{display:'flex', justifyContent:'space-between', flexWrap:'wrap', background:'gainsboro', paddingX:4, paddingY:5,
+   }}>
         <Box display="flex" flexDirection="column" alignItems="flex-start" sx={{width:{xs:'100%', lg:'30%'}, marginBottom:{xs:4, md:4}}}>
             <Typography color={shades.primary[500]} variant="h5" component="p" marginBottom={"4px"} >
                 EveryDay Culture

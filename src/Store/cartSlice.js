@@ -75,10 +75,15 @@ const cartSlice = createSlice({
       state.totalAmount = newTotalAmount;
       state.totalItems -= 1;
     },
+    emptyCart(state, action) {
+      state.cart = [];
+      state.totalAmount = 0;
+      state.totalItems = 0;
+    }
   },
 });
 
-export const { addItem, setisCartOpen, removeItem, decreaseItem } =
+export const { addItem, setisCartOpen, removeItem, decreaseItem, emptyCart } =
   cartSlice.actions;
 
 export default cartSlice;
