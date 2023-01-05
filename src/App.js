@@ -21,7 +21,7 @@ function App() {
     document.documentElement.scrollTo({
       top: 0,
       left: 0,
-      behavior: "smooth", // Optional if you want to skip the scrolling animation
+      behavior: "smooth",
     });
   }, [pathname,filteredPath]);
   return (

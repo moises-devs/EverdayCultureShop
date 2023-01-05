@@ -7,14 +7,20 @@ import styles from "./Home.module.css"
 function Home(props) {
   const [items, setItems] = useState([]);
   useEffect(() => {
-    const getItem = async () => {
+    const getItems = async () => {
       const data = await fetch(
-        `http://localhost:1337/api/products/?populate=img${props.path.path ? props.path.path : ''}`
+        `${process.env.REACT_APP_API_URL}/products/?populate=img${props.path.path ? props.path.path : ''}`,
+        {
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`
+          }
+        }
       );
       const response = await data.json();
       setItems(response.data);
     };
-    getItem();
+    getItems();
   }, [props.path]);
 
   return (

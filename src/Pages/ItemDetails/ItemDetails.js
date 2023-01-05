@@ -89,7 +89,13 @@ function ItemDetails() {
   useEffect(() => {
     const getItem = async () => {
       const data = await fetch(
-        `http://localhost:1337/api/products/${itemID}?populate=img`
+        `${process.env.REACT_APP_API_URL}/products/${itemID}?populate=img`,
+        {
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`
+          }
+        }
       );
       const response = await data.json();
       setItem(response.data);
@@ -97,7 +103,13 @@ function ItemDetails() {
 
     const getRelatedItem = async() => {
       const data = await fetch (
-        `http://localhost:1337/api/products?populate=img&pagination[page]=2&pagination[pageSize]=8`
+        `${process.env.REACT_APP_API_URL}/products?populate=img&pagination[page]=2&pagination[pageSize]=8`,
+        {
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`
+          }
+        }
       )
       const response = await data.json();
       setRelatedItems(response.data);
