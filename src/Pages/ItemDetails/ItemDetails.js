@@ -21,6 +21,15 @@ import { addItem } from "../../Store/cartSlice";
 import Item from "../../Components/Item/Item";
 import styles from "./ItemDetails.module.css";
 import axios from "axios";
+import BounceLoader from "react-spinners/BounceLoader";
+
+const override =  {
+  display: "block",
+  margin: "10% auto",
+  borderColor: shades.secondary[500],
+
+};
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -60,6 +69,7 @@ function ItemDetails() {
   const [count, setCount] = useState(1);
   const [value, setValue] = useState(0);
   const [relatedItems, setRelatedItems] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -88,16 +98,13 @@ function ItemDetails() {
 
   useEffect(() => {
     const getItem = async () => {
+      setLoading(true);
       try {
         const data = await axios(
-          `${process.env.REACT_APP_API_URL}/products/${itemID}?populate=img`,
-          {
-            headers: {
-              Authorization: "bearer " + process.env.REACT_APP_API_TOKEN,
-            },
-          }
+          `${process.env.REACT_APP_API_URL}/products/${itemID}?populate=img`
         );
         setItem(data.data.data);
+        setLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -105,12 +112,7 @@ function ItemDetails() {
 
     const getRelatedItem = async () => {
       const data = await axios(
-        `${process.env.REACT_APP_API_URL}/products?populate=img&pagination[page]=2&pagination[pageSize]=8`,
-        {
-          headers: {
-            Authorization: "bearer " + process.env.REACT_APP_API_TOKEN,
-          },
-        }
+        `${process.env.REACT_APP_API_URL}/products?populate=img&pagination[page]=2&pagination[pageSize]=8`
       );
       setRelatedItems(data.data.data);
     };
@@ -123,7 +125,7 @@ function ItemDetails() {
   return (
     <>
       {/*start of wrapper */}
-      {item && (
+      {!loading && item && (
         <Box
           sx={{
             display: "flex",
@@ -160,7 +162,7 @@ function ItemDetails() {
               <img
                 width="100%"
                 height="100%"
-                src={`${process.env.REACT_APP_UPLOAD_URL}${item.attributes?.img?.data[0]?.attributes?.formats?.medium?.url}`}
+                src={`${item.attributes?.img?.data[0].attributes?.formats?.medium?.url}`}
                 alt={item.attributes.name}
                 style={{ objectFit: "cover" }}
               />
@@ -362,7 +364,8 @@ function ItemDetails() {
                 justifyContent: "space-evenly",
               }}
             >
-              {relatedItems.map((item, index) => (
+              {relatedItems.length === 0 && <p> No related Items </p>}
+              {relatedItems.length !==0 && relatedItems.map((item, index) => (
                 <Item key={`${item.id}-${index}`} {...item} />
               ))}
             </Box>
@@ -370,7 +373,14 @@ function ItemDetails() {
         </Box>
       )}
       {/*end of wrapper */}
-      {!item && <p> Loading </p>}
+       <BounceLoader
+        loading={loading}
+        color={shades.primary[500]}
+        cssOverride={override}
+        size="30vh"
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
     </>
   );
 }

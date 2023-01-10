@@ -31,12 +31,12 @@ export default function Item(props) {
   return (
     <Card
       sx={{
-        maxWidth: "32s0px",
-        minWidth: "180px",
-        flexBasis: "20%",
+        maxWidth: "320px",
+        // minWidth: "180px",
+        flexBasis: {xs: "45%", md:"25%"},
         m: "2%",
         position: "relative",
-        height:{xs:435, sm:440,}
+        // height:{xs:435, sm:440,}
       }}
       onMouseLeave={() => setShowThumbnail(false)}
     >
@@ -44,7 +44,7 @@ export default function Item(props) {
         component="img"
         alt={props.attributes.name}
         height="250"
-        image={`${process.env.REACT_APP_UPLOAD_URL}${props.attributes?.img?.data[0]?.attributes?.formats?.medium?.url}`}
+        image={`${props.attributes?.img?.data[0].attributes?.formats?.medium?.url}`}
         onMouseOver={() => setShowThumbnail(true)}
       />
       <CardContent sx={{display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
