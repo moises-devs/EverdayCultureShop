@@ -13,7 +13,7 @@ function WishItem(props) {
     <Box sx={{ position:'relative', my: 0.3, border:`.1rem solid ${shades.primary[500]}`, display: "flex", justifyContent: "space-between", alignItems:'center'
     , borderLeft:0, borderRight:0, borderTop:0 }}>
       <Box sx={{ width: "50%", height:'85%' }}>
-        <img src={`${props.attributes?.img?.data[0].attributes?.formats?.medium?.url}`}
+        <img src={`${process.env.REACT_APP_UPLOAD_URL}${props.attributes?.img?.data[0].attributes?.formats?.medium?.url}`}
          alt={props.attributes.name} height="100%" width="100%" />
       </Box>
       <Box>
