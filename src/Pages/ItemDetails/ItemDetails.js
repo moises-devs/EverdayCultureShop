@@ -162,7 +162,7 @@ function ItemDetails() {
               <img
                 width="100%"
                 height="100%"
-                src={`${process.env.REACT_APP_UPLOAD_URL}${item.attributes?.img?.data[0].attributes?.formats?.medium?.url}`}
+                src={item.attributes?.img?.data[0].attributes?.formats?.medium?.url}
                 alt={item.attributes.name}
                 style={{ objectFit: "cover" }}
               />

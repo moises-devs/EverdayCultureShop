@@ -28,6 +28,7 @@ export default function Item(props) {
     let item = {...props, amount:1};
     dispatch(addItem(item));
   }
+  console.log(props.attributes.img.data[0].attributes.formats.medium.url);
   return (
     <Card
       sx={{
@@ -44,7 +45,7 @@ export default function Item(props) {
         component="img"
         alt={props.attributes.name}
         height="250"
-        image={`${process.env.REACT_APP_UPLOAD_URL}${props.attributes?.img?.data[0].attributes?.formats?.medium?.url}`}
+        image={`${props.attributes?.img?.data[0].attributes?.formats?.medium?.url}`}
         onMouseOver={() => setShowThumbnail(true)}
       />
       <CardContent sx={{display:'flex', flexDirection:'column', justifyContent:'space-between' }}>

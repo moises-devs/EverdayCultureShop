@@ -96,7 +96,7 @@ export default function BasicModal() {
               >
                 <Box sx={{ height: "30%", width: "30%" }}>
                   <img
-                    src={`${process.env.REACT_APP_UPLOAD_URL}${item.attributes?.img?.data[0].attributes?.formats?.medium?.url}`}
+                    src={item.attributes?.img?.data[0].attributes?.formats?.medium?.url}
                     alt={item.attributes.name}
                     height="100%"
                     width="100%"
