@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/EverdayCultureShop/static/css/main.7664ca29.css",
+    "main.js": "/EverdayCultureShop/static/js/main.2e5f6fb0.js",
+    "static/media/404 Error Page not Found with people connecting a plug.gif": "/EverdayCultureShop/static/media/404 Error Page not Found with people connecting a plug.88300c3561f965a6dd41.gif",
+    "static/media/brooke-cagle-DlaAZKsSqRQ-unsplash.jpg": "/EverdayCultureShop/static/media/brooke-cagle-DlaAZKsSqRQ-unsplash.30dffb79490242968e06.jpg",
+    "static/media/tamara-bellis-68csPWTnafo-unsplash.jpg": "/EverdayCultureShop/static/media/tamara-bellis-68csPWTnafo-unsplash.b78ef6e7b38953e48d67.jpg",
+    "static/media/danil-aksenov-8-zZ6rSBiGU-unsplash.jpg": "/EverdayCultureShop/static/media/danil-aksenov-8-zZ6rSBiGU-unsplash.7aa0f771d22933189e13.jpg",
+    "static/media/elric-pxl-VwJeISXJ7qE-unsplash (1).jpg": "/EverdayCultureShop/static/media/elric-pxl-VwJeISXJ7qE-unsplash (1).a42a3c9d5d10a41ebff6.jpg",
+    "static/media/404 Error Page not Found with people connecting a plug (2).gif": "/EverdayCultureShop/static/media/404 Error Page not Found with people connecting a plug (2).53719595ff361e0a273c.gif",
+    "static/media/axel-antas-bergkvist-ndJQbMENknI-unsplash.jpg": "/EverdayCultureShop/static/media/axel-antas-bergkvist-ndJQbMENknI-unsplash.03e96b3da677f541b44f.jpg",
+    "index.html": "/EverdayCultureShop/index.html",
+    "main.7664ca29.css.map": "/EverdayCultureShop/static/css/main.7664ca29.css.map",
+    "main.2e5f6fb0.js.map": "/EverdayCultureShop/static/js/main.2e5f6fb0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7664ca29.css",
+    "static/js/main.2e5f6fb0.js"
+  ]
+}
