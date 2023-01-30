@@ -3,7 +3,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://www.everydayculture.shop/">
+  <a href="https://peaceful-smakager-315ec1.netlify.app/">
     <img src="./src/Assets/ReadmeIMGS/everyday.png" alt="Logo" >
   </a>
   <h3 align="center">EveryDay Culture</h3>
@@ -12,7 +12,7 @@
     <br />
     <br />
     <mark> NOTE IF THIS IS FIRST TIME VISITING IT MAY TAKE A MIN TO START UP DUE TO THE BACKEND PROCESS </mark>
-    <a href="https://www.everydayculture.shop/">View Demo</a>
+    <a href="https://peaceful-smakager-315ec1.netlify.app/">View Demo</a>
   </p>
 </div>
 
@@ -67,6 +67,6 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 
 ## How to use 
-* [Visit the Link](https://www.everydayculture.shop/)
+* [Visit the Link](https://peaceful-smakager-315ec1.netlify.app/)
 NOTE IF THIS IS FIRST TIME VISITING IT MAY TAKE A MIN TO START UP DUE TO THE BACKEND PROCESS
 
